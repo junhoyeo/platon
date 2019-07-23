@@ -52,7 +52,7 @@ class Lexer():
                         if not isdigit(peek):
                             break
                         elif int(peek) not in range(numerals[n]):
-                            raise
+                            raise SyntaxError('invalid token')
                         self.next()
                     self.add_token(
                         TokenType.NUMBER,
