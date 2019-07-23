@@ -2,11 +2,14 @@ from typing import List
 from .token import Token
 from .token_types import TokenType
 
+
 def isdigit(char: str) -> bool:
     return False if not char else char.isdigit()
 
+
 def isalpha(char: str) -> bool:
     return False if not char else char.isalpha()
+
 
 numerals = {'b': 2, 'o': 8}
 operators = {
@@ -16,6 +19,7 @@ operators = {
     '=': TokenType.EQUAL
 }
 
+
 class Lexer():
     def __init__(self, source: str) -> None:
         self.source = source
@@ -23,15 +27,15 @@ class Lexer():
         self.start = 0
         self.current = 0
         self.line = 1
-    
+
     def lex(self) -> List[Token]:
         while self.current < len(self.source):
             self.start = self.current
             self.tokenize()
-        
+
         self.add_token(TokenType.EOF, None)
         return self.tokens
-    
+
     def tokenize(self) -> None:
         char = self.next()
 
@@ -44,14 +48,14 @@ class Lexer():
             while isdigit(self.peek()):
                 self.next()
             peek = self.peek()
-            if peek == '.': # float
+            if peek == '.':  # float
                 self.next()
                 while isdigit(self.peek()):
                     self.next()
             for n in numerals.keys():
                 if peek == n:
                     self.next()
-                    while 1:
+                    while True:
                         peek = self.peek()
                         if not isdigit(peek):
                             break
@@ -69,7 +73,7 @@ class Lexer():
             )
 
         elif char.isalpha():
-            while 1:
+            while True:
                 peek = self.peek()
                 if not (isalpha(peek) or isdigit(peek)):
                     break
@@ -78,7 +82,7 @@ class Lexer():
             if TokenType.has_keyword(text):
                 self.add_token(TokenType(text), None)
             else:
-                self.add_token(TokenType.IDENTIFIER, text)    
+                self.add_token(TokenType.IDENTIFIER, text)
 
         else:
             print(self.tokens)
