@@ -2,13 +2,14 @@ from typing import List
 from .token import Token
 from .token_types import TokenType
 
-def isdigit(char: str):
-    if char == None:
-        return False
-    return char.isdigit()
+def isdigit(char: str) -> bool:
+    return False if not char else char.isdigit()
+
+def isalpha(char: str) -> bool:
+    return False if not char else char.isalpha()
 
 class Lexer():
-    def __init__(self, source: str):
+    def __init__(self, source: str) -> None:
         self.source = source
         self.tokens = []
         self.start = 0
@@ -20,31 +21,37 @@ class Lexer():
             self.start = self.current
             self.tokenize()
         
-        self.tokens.append(Token(TokenType.EOF, None))
+        self.add_token(TokenType.EOF, None)
         return self.tokens
     
-    def tokenize(self):
+    def tokenize(self) -> None:
         char = self.next()
 
         if char == '+':
-            self.tokens.append(Token(TokenType.PLUS, '+'))
+            self.add_token(TokenType.PLUS, '+')
+        elif char == '=':
+            self.add_token(TokenType.EQUAL, '=')
 
         elif char.isdigit():
             while isdigit(self.peek()):
                 self.next()
-
             if self.peek == '.':
                 self.next()
-
                 while isdigit(self.peek()):
                     self.next()
-
-            self.tokens.append(
-                Token(
-                    TokenType.NUMBER,
-                    float(self.source[self.start: self.current])
-                )
+            self.add_token(
+                TokenType.NUMBER,
+                float(self.source[self.start: self.current])
             )
+
+        elif char.isalpha():
+            while isalpha(self.peek()):
+                self.next()
+            text = self.source[self.start: self.current]
+            if TokenType.has_keyword(text):
+                self.add_token(TokenType(text), None)
+            else:
+                self.add_token(TokenType.IDENTIFIER, text)
         
         elif char == ' ':
             pass
@@ -60,3 +67,6 @@ class Lexer():
         if self.current >= len(self.source):
             return None
         return self.source[self.current]
+
+    def add_token(self, _type, _value) -> None:
+        self.tokens.append(Token(_type, _value))
