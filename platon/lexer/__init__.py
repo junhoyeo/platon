@@ -9,6 +9,12 @@ def isalpha(char: str) -> bool:
     return False if not char else char.isalpha()
 
 numerals = {'b': 2, 'o': 8}
+operators = {
+    ' ': TokenType.BLANK,
+    '-': TokenType.MINUS,
+    '+': TokenType.PLUS,
+    '=': TokenType.EQUAL
+}
 
 class Lexer():
     def __init__(self, source: str) -> None:
@@ -29,14 +35,12 @@ class Lexer():
     def tokenize(self) -> None:
         char = self.next()
 
-        if char == '-':
-            self.add_token(TokenType.MINUS, '-')
-        elif char == '+':
-            self.add_token(TokenType.PLUS, '+')
-        elif char == '=':
-            self.add_token(TokenType.EQUAL, '=')
+        for op in operators.keys():
+            if char == op:
+                self.add_token(operators[op], op)
+                return
 
-        elif char.isdigit():
+        if char.isdigit():
             while isdigit(self.peek()):
                 self.next()
             peek = self.peek()
@@ -74,13 +78,11 @@ class Lexer():
             if TokenType.has_keyword(text):
                 self.add_token(TokenType(text), None)
             else:
-                self.add_token(TokenType.IDENTIFIER, text)
-        
-        elif char == ' ':
-            pass
+                self.add_token(TokenType.IDENTIFIER, text)    
 
         else:
-            exit(1)
+            print(self.tokens)
+            raise SyntaxError('invalid token')
 
     def next(self) -> str:
         self.current += 1

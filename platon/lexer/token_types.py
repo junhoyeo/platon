@@ -1,6 +1,7 @@
 from enum import Enum, auto
 
 class TokenType(Enum):
+    BLANK = auto()
     MINUS = auto()
     PLUS = auto()
     EQUAL = auto()
