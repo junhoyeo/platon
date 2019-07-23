@@ -36,8 +36,8 @@ class Lexer():
 
         elif char.isdigit():
             while isdigit(self.peek()):
-                self.next()
-            if self.peek == '.':
+                self.next()            
+            if self.peek() == '.':
                 self.next()
                 while isdigit(self.peek()):
                     self.next()

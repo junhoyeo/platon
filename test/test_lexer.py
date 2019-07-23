@@ -31,6 +31,16 @@ class TokenizeNumber(unittest.TestCase):
             TokenType.EOF
         ])
         self.assertEqual(filter_value(tokens), [1, '+', 11, '-', 55, None])
+    
+    def test_float_number(self):
+        tokens = Lexer('1.2 + 0.5').lex()
+        self.assertEqual(filter_type(tokens), [
+            TokenType.NUMBER,
+            TokenType.PLUS,
+            TokenType.NUMBER,
+            TokenType.EOF
+        ])
+        self.assertEqual(filter_value(tokens), [1.2, '+', 0.5, None])
 
 if __name__ == '__main__':
     unittest.main()
