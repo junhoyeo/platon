@@ -8,6 +8,8 @@ def isdigit(char: str) -> bool:
 def isalpha(char: str) -> bool:
     return False if not char else char.isalpha()
 
+numerals = {'b': 2, 'o': 8}
+
 class Lexer():
     def __init__(self, source: str) -> None:
         self.source = source
@@ -36,11 +38,27 @@ class Lexer():
 
         elif char.isdigit():
             while isdigit(self.peek()):
-                self.next()            
-            if self.peek() == '.':
+                self.next()
+            peek = self.peek()
+            if peek == '.': # float
                 self.next()
                 while isdigit(self.peek()):
                     self.next()
+            for n in numerals.keys():
+                if peek == n:
+                    self.next()
+                    while 1:
+                        peek = self.peek()
+                        if not isdigit(peek):
+                            break
+                        elif int(peek) not in range(numerals[n]):
+                            raise
+                        self.next()
+                    self.add_token(
+                        TokenType.NUMBER,
+                        eval(self.source[self.start: self.current])
+                    )
+                    return
             self.add_token(
                 TokenType.NUMBER,
                 float(self.source[self.start: self.current])
