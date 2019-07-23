@@ -2,6 +2,11 @@ from typing import List
 from .token import Token
 from .token_types import TokenType
 
+def isdigit(char: str):
+    if char == None:
+        return False
+    return char.isdigit()
+
 class Lexer():
     def __init__(self, source: str):
         self.source = source
@@ -24,10 +29,15 @@ class Lexer():
         if char == '+':
             self.tokens.append(Token(TokenType.PLUS, '+'))
 
-        if char.isdigit():
-            peek = self.peek()
-            while peek and peek.isdigit() or peek == '.':
+        elif char.isdigit():
+            while isdigit(self.peek()):
                 self.next()
+
+            if self.peek == '.':
+                self.next()
+
+                while isdigit(self.peek()):
+                    self.next()
 
             self.tokens.append(
                 Token(
@@ -35,6 +45,12 @@ class Lexer():
                     float(self.source[self.start: self.current])
                 )
             )
+        
+        elif char == ' ':
+            pass
+
+        else:
+            exit(1)
 
     def next(self) -> str:
         self.current += 1
