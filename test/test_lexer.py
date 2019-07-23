@@ -21,16 +21,16 @@ class TokenizeNumber(unittest.TestCase):
         self.assertEqual(filter_value(tokens), [1, '+', 2, None])
 
     def test_multidigit_number(self):
-        tokens = Lexer('1 + 11 + 55').lex()
+        tokens = Lexer('1 + 11 - 55').lex()
         self.assertEqual(filter_type(tokens), [
             TokenType.NUMBER,
             TokenType.PLUS,
             TokenType.NUMBER,
-            TokenType.PLUS,
+            TokenType.MINUS,
             TokenType.NUMBER,
             TokenType.EOF
         ])
-        self.assertEqual(filter_value(tokens), [1, '+', 11, '+', 55, None])
+        self.assertEqual(filter_value(tokens), [1, '+', 11, '-', 55, None])
 
 if __name__ == '__main__':
     unittest.main()

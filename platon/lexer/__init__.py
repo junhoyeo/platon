@@ -27,7 +27,9 @@ class Lexer():
     def tokenize(self) -> None:
         char = self.next()
 
-        if char == '+':
+        if char == '-':
+            self.add_token(TokenType.MINUS, '-')
+        elif char == '+':
             self.add_token(TokenType.PLUS, '+')
         elif char == '=':
             self.add_token(TokenType.EQUAL, '=')
@@ -45,7 +47,10 @@ class Lexer():
             )
 
         elif char.isalpha():
-            while isalpha(self.peek()):
+            while 1:
+                peek = self.peek()
+                if not (isalpha(peek) or isdigit(peek)):
+                    break
                 self.next()
             text = self.source[self.start: self.current]
             if TokenType.has_keyword(text):
