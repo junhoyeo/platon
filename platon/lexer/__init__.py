@@ -1,6 +1,7 @@
 from typing import List
 from .token import Token
 from .token_types import TokenType
+from .symbols import numerals, operators
 
 
 def isdigit(char: str) -> bool:
@@ -9,15 +10,6 @@ def isdigit(char: str) -> bool:
 
 def isalpha(char: str) -> bool:
     return False if not char else char.isalpha() or char == '_'
-
-
-numerals = {'b': 2, 'o': 8}
-operators = {
-    ' ': TokenType.BLANK,
-    '-': TokenType.MINUS,
-    '+': TokenType.PLUS,
-    '=': TokenType.EQUAL
-}
 
 
 class Lexer():
@@ -83,6 +75,9 @@ class Lexer():
                 self.add_token(TokenType(text), None)
             else:
                 self.add_token(TokenType.IDENTIFIER, text)
+
+        elif char == '\n':
+            self.line += 1
 
         else:
             print(self.tokens)
