@@ -8,7 +8,7 @@ def isdigit(char: str) -> bool:
 
 
 def isalpha(char: str) -> bool:
-    return False if not char else char.isalpha()
+    return False if not char else char.isalpha() or char == '_'
 
 
 numerals = {'b': 2, 'o': 8}
@@ -72,7 +72,7 @@ class Lexer():
                 float(self.source[self.start: self.current])
             )
 
-        elif char.isalpha():
+        elif isalpha(char):
             while True:
                 peek = self.peek()
                 if not (isalpha(peek) or isdigit(peek)):
