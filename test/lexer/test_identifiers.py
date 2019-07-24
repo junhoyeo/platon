@@ -12,18 +12,12 @@ class TokenizeIdentifier(unittest.TestCase):
 
     def test_identifier_with_numbers(self):
         '''tokenizing identifiers with numbers'''
-        self.assertEqual(
-            lexResult('foo_123')[0],
-            (TokenType.IDENTIFIER,
-             'foo_123'))
+        self.assertEqual(lexResult('foo_123')[0], (TokenType.IDENTIFIER, 'foo_123'))
         self.assertEqual(lexResult('_123')[0], (TokenType.IDENTIFIER, '_123'))
 
     def test_identifier_with_underscore(self):
         '''tokenizing identifiers with underscore'''
-        self.assertEqual(
-            lexResult('foo_bar')[0],
-            (TokenType.IDENTIFIER,
-             'foo_bar'))
+        self.assertEqual(lexResult('foo_bar')[0], (TokenType.IDENTIFIER, 'foo_bar'))
         self.assertEqual(
             lexResult('_foo')[0],
             (TokenType.IDENTIFIER,
